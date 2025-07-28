@@ -26,11 +26,11 @@ Crisis Intervention: Automatic detection and specialized support
 Hybrid Intelligence: Context-aware routing with mood analysis
 Session Management: Unique session tracking and conversation summaries
 
-Architecture
+# ARCHITECURE
 User Input → Classifier → Intelligent Router → Specialized Agent → Response
      ↓              ↓            ↓                   ↓             ↓
   Session Init → Memory Update → Context Analysis → Personality → Summary
-System Flow
+
 
 Session Initialization: Creates unique session with memory context
 Message Classification: Analyzes message across multiple dimensions
