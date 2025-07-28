@@ -1,253 +1,277 @@
-Enhanced Multi-Agent Chatbot System Documentation
-Table of Contents
+# Enhanced Multi-Agent Chatbot System
 
-Overview
-Architecture
-Installation & Setup
-Core Components
-Agent Personalities
-Classification System
-Memory System
-Routing Logic
-API Reference
-Usage Examples
-Configuration
-Troubleshooting
-Contributing
+## 📚 Table of Contents
 
-Overview
-The Enhanced Multi-Agent Chatbot System is a sophisticated conversational AI platform that intelligently routes user messages to specialized agents based on multi-dimensional analysis. The system combines natural language processing, emotional intelligence, and context awareness to provide personalized responses.
-Key Features
+* [Overview](#overview)
+* [Architecture](#architecture)
+* [Installation & Setup](#installation--setup)
+* [Core Components](#core-components)
+* [Agent Personalities](#agent-personalities)
+* [Classification System](#classification-system)
+* [Memory System](#memory-system)
+* [Routing Logic](#routing-logic)
+* [API Reference](#api-reference)
+* [Usage Examples](#usage-examples)
+* [Configuration](#configuration)
+* [Troubleshooting](#troubleshooting)
+* [Contributing](#contributing)
 
-Multi-Agent Architecture: 5 specialized agents with unique personalities
-Intelligent Classification: Multi-dimensional message analysis
-Memory System: Persistent conversation context and user profiling
-Crisis Intervention: Automatic detection and specialized support
-Hybrid Intelligence: Context-aware routing with mood analysis
-Session Management: Unique session tracking and conversation summaries
+---
 
-# ARCHITECURE
+## 🌐 Overview
+
+The **Enhanced Multi-Agent Chatbot System** is an advanced conversational AI platform that intelligently routes user inputs to specialized agents based on deep contextual and emotional analysis.
+
+### Key Features
+
+* ✨ **Multi-Agent Architecture**: Five domain-specific agents with distinct personalities
+* 🤔 **Intelligent Classification**: Multi-dimensional message analysis
+* 📂 **Memory System**: Persistent memory of user preferences and conversation history
+* ⚠️ **Crisis Intervention**: Automatic detection and support for critical messages
+* 🧐 **Hybrid Intelligence**: Combines sentiment, context, and classification for routing
+* 🔍 **Session Management**: Unique session tracking with summaries
+
+---
+
+## 💡 Architecture
+
+```text
 User Input → Classifier → Intelligent Router → Specialized Agent → Response
      ↓              ↓            ↓                   ↓             ↓
   Session Init → Memory Update → Context Analysis → Personality → Summary
+```
 
+### Process Breakdown
 
-Session Initialization: Creates unique session with memory context
-Message Classification: Analyzes message across multiple dimensions
-Intelligent Routing: Selects appropriate agent based on classification and context
-Agent Processing: Specialized agent generates personalized response
-Memory Update: Updates conversation history and user profile
-Response Delivery: Returns enhanced response with personality
+* **Session Initialization**: Generates unique session ID and context
+* **Message Classification**: Analyzes sentiment, urgency, and topics
+* **Intelligent Routing**: Chooses agent based on mood, topic, and context
+* **Agent Processing**: Generates a personalized response
+* **Memory Update**: Updates context, history, and mood trends
+* **Response Delivery**: Enhanced and stylized output
 
-Installation & Setup
-Prerequisites
+---
 
-Python 3.8+
-GROQ API Key
-Required packages (see requirements below)
+## 📁 Installation & Setup
 
-Installation
-bash# Clone or download the chatbot script
+### Prerequisites
+
+* Python 3.8+
+* GROQ API Key
+
+### Install Required Packages
+
+```bash
 pip install langgraph langchain-groq pydantic typing-extensions
+```
 
-# Set your GROQ API key
+### Set Your API Key
+
+```bash
 export GROQ_API_KEY="your_groq_api_key_here"
-Quick Start
-pythonfrom enhanced_chatbot import run_enhanced_chatbot
+```
 
-# Run the interactive chatbot
+### Quick Start
+
+```python
+from enhanced_chatbot import run_enhanced_chatbot
 run_enhanced_chatbot()
-Core Components
-1. State Management
-pythonclass State(TypedDict):
+```
+
+---
+
+## 📊 Core Components
+
+### 1. State Management
+
+```python
+class State(TypedDict):
     messages: Annotated[list, add_messages]
     classification: MessageClassifier | None
     memory: ConversationMemory
     context: dict
     session_id: str
     response_style: str
-The State object maintains all conversation context, including message history, classification results, memory, and session information.
-2. Message Classification
-pythonclass MessageClassifier(BaseModel):
-    message_type: MessageType           # Primary category
-    urgency: Urgency                   # Urgency level
-    topics: List[str]                  # Key topics (max 5)
-    sentiment_score: float             # -1 to 1 sentiment
-    confidence: float                  # Classification confidence
-3. Memory System
-pythonclass ConversationMemory(BaseModel):
-    user_preferences: dict             # User preferences and settings
-    conversation_history: List[dict]   # Complete conversation log
-    user_mood_trend: List[float]       # Sentiment trend analysis
-    topics_discussed: set              # All discussed topics
-Agent Personalities
-Dr. Empathy (Therapist Agent)
+```
 
-Role: Emotional support and therapeutic guidance
-Style: Warm, understanding, uses reflective listening
-Triggers: Emotional messages, crisis situations, declining mood trends
-Specialties: Mental health support, emotional validation, coping strategies
+### 2. Message Classification
 
-Analytica (Logical Agent)
+```python
+class MessageClassifier(BaseModel):
+    message_type: MessageType
+    urgency: Urgency
+    topics: List[str]
+    sentiment_score: float
+    confidence: float
+```
 
-Role: Factual analysis and logical reasoning
-Style: Precise, methodical, data-driven
-Triggers: Logical questions, analytical requests, factual inquiries
-Specialties: Problem-solving, data analysis, step-by-step reasoning
+### 3. Memory System
 
-Artisan (Creative Agent)
+```python
+class ConversationMemory(BaseModel):
+    user_preferences: dict
+    conversation_history: List[dict]
+    user_mood_trend: List[float]
+    topics_discussed: set
+```
 
-Role: Creative ideation and artistic guidance
-Style: Imaginative, inspiring, uses metaphors
-Triggers: Creative requests, brainstorming, artistic projects
-Specialties: Creative writing, design ideas, artistic inspiration
+---
 
-CodeMaster (Technical Agent)
+## 🧩 Agent Personalities
 
-Role: Technical assistance and programming help
-Style: Detailed, systematic, solution-focused
-Triggers: Technical questions, programming issues, system problems
-Specialties: Code debugging, system architecture, technical explanations
+### 👩‍🎓 Dr. Empathy (Therapist)
 
-Buddy (Casual Agent)
+* Role: Emotional support
+* Style: Warm, understanding
+* Triggers: Crisis, declining mood
 
-Role: General conversation and friendly chat
-Style: Friendly, relaxed, conversational
-Triggers: Casual messages, general inquiries, social interaction
-Specialties: General knowledge, friendly conversation, social support
+### 🔢 Analytica (Logical)
 
-Classification System
-Message Types
-TypeDescriptionExample TriggersEMOTIONALFeelings, emotions, personal struggles"I'm feeling sad", "I need support"LOGICALFacts, analysis, reasoning"How does this work?", "Analyze this data"CREATIVEIdeas, brainstorming, artistic content"Help me write a story", "Design ideas"TECHNICALCode, systems, technical problems"Debug this code", "System architecture"CASUALGeneral chat, social interaction"Hello", "What's up?", "Random question"
-Urgency Levels
-LevelDescriptionResponse StrategyCRISISImmediate intervention neededCrisis therapist, emergency resourcesHIGHImportant, time-sensitiveDirect, actionable responsesMEDIUMNotable concernBalanced approachLOWGeneral inquiryConversational, detailed responses
-Sentiment Scoring
+* Role: Factual reasoning
+* Style: Precise, methodical
+* Triggers: Logical questions
 
-Range: -1.0 (very negative) to +1.0 (very positive)
-Usage: Mood tracking, context adjustment, agent selection
-Threshold: < -0.5 triggers therapeutic support consideration
+### 🎨 Artisan (Creative)
 
-Memory System
-Conversation History
-python{
-    "timestamp": "2024-01-15T10:30:00",
-    "message": "User message content",
-    "classification": {
-        "message_type": "emotional",
-        "urgency": "medium",
-        "sentiment_score": -0.3
-    }
+* Role: Artistic inspiration
+* Style: Imaginative, metaphorical
+* Triggers: Creative tasks
+
+### 💻 CodeMaster (Technical)
+
+* Role: Coding and tech help
+* Style: Detailed, solution-focused
+* Triggers: Debugging, architecture
+
+### 🤝 Buddy (Casual)
+
+* Role: Social interaction
+* Style: Friendly, informal
+* Triggers: Casual chats
+
+---
+
+## 📈 Classification System
+
+### Message Types
+
+| Type      | Description                     | Example                  |
+| --------- | ------------------------------- | ------------------------ |
+| EMOTIONAL | Emotions, personal struggles    | "I'm feeling lost"       |
+| LOGICAL   | Facts, analysis, reasoning      | "Explain this algorithm" |
+| CREATIVE  | Ideas, brainstorming            | "Help write a poem"      |
+| TECHNICAL | Programming or systems help     | "Fix this code"          |
+| CASUAL    | Small talk, general interaction | "Hey, how are you?"      |
+
+### Urgency Levels
+
+| Level  | Description           | Strategy                        |
+| ------ | --------------------- | ------------------------------- |
+| CRISIS | Immediate help needed | Crisis agent + emergency advice |
+| HIGH   | Time-sensitive        | Fast, clear actionable replies  |
+| MEDIUM | Concerned, not urgent | Balanced, thoughtful response   |
+| LOW    | General inquiry       | Friendly and descriptive        |
+
+### Sentiment Scoring
+
+* **Range**: -1.0 (very negative) to +1.0 (very positive)
+* **Use**: Routing, personalization, and mood detection
+* **Threshold**: Avg < -0.5 triggers hybrid therapeutic agent
+
+---
+
+## 📂 Memory System
+
+### Example History Entry
+
+```json
+{
+  "timestamp": "2024-01-15T10:30:00",
+  "message": "User message content",
+  "classification": {
+    "message_type": "emotional",
+    "urgency": "medium",
+    "sentiment_score": -0.3
+  }
 }
-Mood Trend Analysis
+```
 
-Tracks sentiment scores over time
-Calculates rolling averages for context
-Triggers therapeutic support for declining trends
-Influences agent selection and response style
+### Features
 
-Topic Memory
+* Tracks **sentiment trends** for emotional decline
+* Maintains **topics** to improve continuity
+* Stores **user preferences** for personalization
 
-Maintains set of all discussed topics
-Enables contextual references in responses
-Helps with conversation continuity
-Supports personalized interactions
+---
 
-Routing Logic
-Primary Routing
-pythonroute_map = {
+## 🛠️ Routing Logic
+
+### Primary Routing Map
+
+```python
+route_map = {
     MessageType.EMOTIONAL: "therapist",
     MessageType.LOGICAL: "logical",
     MessageType.CREATIVE: "creative",
     MessageType.TECHNICAL: "technical",
     MessageType.CASUAL: "casual"
 }
-Context-Aware Adjustments
-Crisis Detection
+```
 
-Urgency level CRISIS → Crisis Therapist
-Provides immediate resources and professional referrals
+### Context-Aware Adjustments
 
-Mood-Based Routing
+* **Crisis → Crisis Therapist**
+* **Negative Mood Trend → Hybrid Therapist**
+* **Low Confidence → Casual Agent**
 
-Average mood < -0.5 over last 3 messages → Hybrid Therapist
-Combines therapeutic support with requested functionality
-Maintains empathy while addressing original intent
+---
 
-Confidence-Based Fallbacks
+## 📲 API Reference
 
-Low classification confidence → Casual Agent
-Provides general support while gathering more context
+### Core Functions
 
-API Reference
-Core Functions
-initialize_session(state: State) -> dict
-Initializes a new conversation session with unique ID and memory.
-Returns:
+```python
+def initialize_session(state: State) -> dict
+```
 
-session_id: Unique session identifier
-memory: Fresh ConversationMemory instance
-context: Session metadata
+Initializes a new session and returns session data.
 
-enhanced_classify_message(state: State) -> dict
-Performs multi-dimensional message analysis.
-Parameters:
+```python
+def enhanced_classify_message(state: State) -> dict
+```
 
-state: Current conversation state
+Returns `MessageClassifier` object and updates memory.
 
-Returns:
+```python
+def intelligent_router(state: State) -> dict
+```
 
-classification: MessageClassifier instance
-memory: Updated memory with classification data
+Determines agent to route the message to.
 
-intelligent_router(state: State) -> dict
-Routes messages to appropriate agents based on classification and context.
-Parameters:
+```python
+def create_enhanced_agent(agent_type: str, personality: dict) -> function
+```
 
-state: Current conversation state with classification
+Returns an agent function with embedded personality.
 
-Returns:
+### Agent Interface
 
-next: Target agent identifier
-
-create_enhanced_agent(agent_type: str, personality: dict) -> function
-Factory function for creating specialized agents.
-Parameters:
-
-agent_type: Agent identifier
-personality: Personality configuration
-
-Returns:
-
-Agent function with embedded personality
-
-Agent Functions
-All agent functions follow the same signature:
-pythondef agent_function(state: State) -> dict:
+```python
+def agent_function(state: State) -> dict:
     """
-    Process user message with agent-specific personality and expertise.
-    
-    Parameters:
-        state: Current conversation state
-        
-    Returns:
-        dict: Updated messages with agent response
+    Processes message with specialized response.
     """
-Specialized Agents
-crisis_therapist_agent(state: State) -> dict
-Handles crisis situations with immediate support and resources.
-hybrid_therapist_agent(state: State) -> dict
-Combines therapeutic support with task-specific assistance.
-conversation_summarizer(state: State) -> State
-Generates conversation insights and session summary.
-Usage Examples
-Basic Usage
-pythonfrom enhanced_chatbot import build_enhanced_graph
+```
 
-# Create the chatbot graph
-graph = build_enhanced_graph()
+---
 
-# Process a single message
-state = graph.invoke({
+## 🔄 Usage Examples
+
+### Basic Usage
+
+```python
+from enhanced_chatbot import build_enhanced_graph
+state = build_enhanced_graph().invoke({
     "messages": [{"role": "user", "content": "I'm feeling overwhelmed"}],
     "classification": None,
     "memory": ConversationMemory(),
@@ -255,177 +279,90 @@ state = graph.invoke({
     "session_id": "",
     "response_style": "adaptive"
 })
-
 print(state["messages"][-1]["content"])
-Interactive Session
-pythonfrom enhanced_chatbot import run_enhanced_chatbot
+```
 
-# Start interactive conversation
+### Interactive Mode
+
+```python
+from enhanced_chatbot import run_enhanced_chatbot
 run_enhanced_chatbot()
-Custom Agent Creation
-pythonfrom enhanced_chatbot import create_enhanced_agent, AgentPersonalities
+```
 
-# Create custom agent
-custom_personality = {
-    "name": "DataBot",
-    "style": "analytical, data-focused, uses statistics",
-    "greeting": "Let's dive into the data! 📊"
-}
+---
 
-data_agent = create_enhanced_agent("data", custom_personality)
-Accessing Conversation Memory
-python# After processing messages
-memory = state["memory"]
+## 🔧 Configuration
 
-# Get mood trend
-average_mood = sum(memory.user_mood_trend) / len(memory.user_mood_trend)
+### Environment Variables
 
-# Get recent topics
-recent_topics = list(memory.topics_discussed)[-5:]
-
-# Get conversation history
-last_interactions = memory.conversation_history[-3:]
-Configuration
-Environment Variables
-bash# Required
+```bash
 GROQ_API_KEY=your_groq_api_key_here
-
-# Optional
 CHATBOT_LOG_LEVEL=INFO
 CHATBOT_MAX_HISTORY=100
 CHATBOT_SESSION_TIMEOUT=3600
-Model Configuration
-python# Default configuration
-llm = ChatGroq(
-    model="llama3-8b-8192",
-    temperature=0.7
-)
+```
 
-# Custom configuration
-llm = ChatGroq(
-    model="llama3-70b-8192",  # Larger model for better performance
-    temperature=0.5,           # Lower temperature for more consistent responses
-    max_tokens=1000           # Limit response length
-)
-Agent Personality Customization
-python# Modify existing personalities
-AgentPersonalities.THERAPIST["style"] = "warm, professional, solution-focused"
-AgentPersonalities.THERAPIST["greeting"] = "I'm here to help you navigate this. 🌟"
+### Model Settings
 
-# Add new personality
-AgentPersonalities.RESEARCHER = {
-    "name": "Scholar",
-    "style": "academic, thorough, evidence-based",
-    "greeting": "Let's explore this topic in depth! 🔍"
-}
-Troubleshooting
-Common Issues
-API Key Errors
-Error: Invalid API key
-Solution: Verify GROQ_API_KEY is set correctly
-Classification Failures
-Error: Classification returned None
-Solution: Check message content is not empty, verify LLM connection
-Memory Overflow
-Error: Memory usage too high
-Solution: Implement memory cleanup, limit conversation history
-Agent Routing Issues
-Error: Unknown agent type
-Solution: Verify agent exists in routing map, check classification output
-Debug Mode
-Enable detailed logging:
-pythonimport logging
+```python
+llm = ChatGroq(model="llama3-8b-8192", temperature=0.7)
+```
+
+---
+
+## 🚫 Troubleshooting
+
+| Issue                | Solution                                  |
+| -------------------- | ----------------------------------------- |
+| Invalid API key      | Check `GROQ_API_KEY` environment variable |
+| Classification fails | Check message content / model connection  |
+| Memory overflow      | Implement cleanup, reduce history size    |
+| Unknown agent type   | Check classification and routing logic    |
+
+```python
+import logging
 logging.basicConfig(level=logging.DEBUG)
+```
 
-# Run with debug output
-run_enhanced_chatbot()
-Performance Optimization
-Memory Management
-python# Limit conversation history
-MAX_HISTORY = 50
+---
 
-def cleanup_memory(memory: ConversationMemory):
-    if len(memory.conversation_history) > MAX_HISTORY:
-        memory.conversation_history = memory.conversation_history[-MAX_HISTORY:]
-    
-    if len(memory.user_mood_trend) > MAX_HISTORY:
-        memory.user_mood_trend = memory.user_mood_trend[-MAX_HISTORY:]
-Response Caching
-pythonfrom functools import lru_cache
+## 🚀 Contributing
 
-@lru_cache(maxsize=128)
-def cached_classification(message_content: str):
-    # Cache classification results for identical messages
-    pass
-Advanced Features
-Multi-Session Support
-pythonclass SessionManager:
-    def __init__(self):
-        self.sessions = {}
-    
-    def get_session(self, session_id: str) -> State:
-        return self.sessions.get(session_id)
-    
-    def create_session(self) -> str:
-        session_id = generate_session_id()
-        self.sessions[session_id] = initialize_state()
-        return session_id
-Custom Classification Models
-pythondef custom_classifier(message: str) -> MessageClassifier:
-    # Implement custom classification logic
-    # Could use different models, rule-based systems, etc.
-    pass
-Webhook Integration
-pythonfrom flask import Flask, request, jsonify
+### Setup
 
-app = Flask(__name__)
-graph = build_enhanced_graph()
-
-@app.route('/chat', methods=['POST'])
-def chat_endpoint():
-    data = request.json
-    state = graph.invoke(data)
-    return jsonify(state["messages"][-1])
-Contributing
-Development Setup
-bash# Clone repository
-git clone <repository-url>
+```bash
+git clone <repo-url>
 cd enhanced-chatbot
-
-# Install development dependencies
 pip install -r requirements-dev.txt
-
-# Run tests
 pytest tests/
-
-# Run linting
 flake8 src/
 black src/
-Adding New Agents
+```
 
-Define personality in AgentPersonalities
-Create agent function using create_enhanced_agent
-Add routing logic to intelligent_router
-Add agent to graph in build_enhanced_graph
-Write tests for new functionality
+### Add a New Agent
 
-Testing
-python# Test message classification
+1. Define in `AgentPersonalities`
+2. Create via `create_enhanced_agent`
+3. Add to `intelligent_router`
+4. Register in `build_enhanced_graph`
+
+### Tests
+
+```python
 def test_classification():
-    state = {"messages": [{"role": "user", "content": "I need help with Python"}]}
-    result = enhanced_classify_message(state)
-    assert result["classification"].message_type == MessageType.TECHNICAL
+    ...
 
-# Test agent responses
 def test_agent_response():
-    state = create_test_state("Hello there!")
-    response = casual_agent(state)
-    assert "Buddy" in response["messages"][0]["content"]
-Code Style Guidelines
+    ...
+```
 
-Follow PEP 8 for Python code style
-Use type hints for all function parameters and returns
-Document all public functions with docstrings
-Keep functions focused and under 50 lines
-Use meaningful variable names
-Add comments for complex logic
+### Code Style
+
+* Follow **PEP 8**
+* Use **type hints**
+* Add **docstrings** and **comments**
+* Use **meaningful variable names**
+
+---
+
+Feel free to contribute ideas, fixes, or enhancements via pull requests! 🚀
